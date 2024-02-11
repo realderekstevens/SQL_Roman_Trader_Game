@@ -5,38 +5,6 @@ chmod +x app.sh
 psql -U postgres
 CREATE DATABASE trader_game;
 \c trader_game
-CREATE TABLE commodities;
-ALTER TABLE commodities ADD COLUMN commodity_id SERIAL PRIMARY KEY;
-ALTER TABLE commodities ADD COLUMN commodity_type varchar(10);
-ALTER TABLE commodities ADD COLUMN commodity_manufacturer varchar(10);
-ALTER TABLE commodities ADD COLUMN commodity_value integer;
-ALTER TABLE commodities ADD COLUMN commodity_amount integer;
-ALTER TABLE commodities ADD COLUMN commodity_production_price integer;
-
-CREATE TABLE buisness(
-   buisness_id INT GENERATED ALWAYS AS IDENTITY,
-   buisness_founded TIME,
-   buisness_owner_id INT,
-   buisness_type VARCHAR(255),
-   buisness_value int,
-   buisness_active BOOLEAN)
-
-CREATE TABLE commodities(
-   commodity_id INT GENERATED ALWAYS AS IDENTITY,
-   commodity_owner_id int,
-   commodity_type varchar(255),
-   commodity_manufacturer int,
-   commodity_value int,
-   commodity_amount int,
-   PRIMARY KEY(commodity_id),
-   CONSTRAINT fk_manufacturer_id
-      FOREIGN KEY(commodity_manufacturer_id)
-	  REFERENCES buisnesses(buisness_id)
-	  ON DELETE CASCADE,
-   CONSTRAINT fk_location_id
-      FOREIGN KEY(location_id)
-	  REFERENCES locations(location_id)
-	  ON DELETE CASCADE);
 
 CREATE TABLE people(
    person_id INT GENERATED ALWAYS AS IDENTITY,
@@ -49,7 +17,36 @@ CREATE TABLE people(
    title VARCHAR(255),
    hunger int,
    satisfaction int,
-   owns_brand BOOLEAN)
+   politics_x int,
+   politics_y int)
+
+CREATE TABLE buisness(
+   buisness_id INT GENERATED ALWAYS AS IDENTITY,
+   buisness_founded TIME,
+   buisness_owner_id INT,
+   buisness_type_id SMALLINT,
+   buisness_active BOOLEAN)
+
+CREATE TABLE commodities(
+   commodity_id INT GENERATED ALWAYS AS IDENTITY,
+   commodity_owner_id int,
+   commodity_type varchar(255),
+   commodity_manufacturer int,
+   commodity_value int,
+   commodity_amount int,
+   commodity_production_price int,
+   commodity_freshness int,
+   PRIMARY KEY(commodity_id),
+   CONSTRAINT fk_manufacturer_id
+      FOREIGN KEY(commodity_manufacturer_id)
+	  REFERENCES buisnesses(buisness_id)
+	  ON DELETE CASCADE,
+   CONSTRAINT fk_location_id
+      FOREIGN KEY(location_id)
+	  REFERENCES locations(location_id)
+	  ON DELETE CASCADE);
+
+
    
 CREATE TABLE locations(
    location id INT GENERATED ALWAYS AS IDENTITY,
@@ -62,16 +59,14 @@ INSERT INTO location(type_name, location_x, location_y)
 VALUES('Rome', 12, 42), 
 ('Alexandria', 30, 31),
 ('London', 0, 52),
-('Four', 4),
-('Five', 5),
-('Six', 6),
-('Seven', 7),
-('Eight', 8),
-('Nine', 9),
-('Ten', 10),
-('Jack', 10),
-('Queen', 10),
-('King', 10);
+('Constantinople', 29, 41),
+('Antioch', 36, 36),
+('Ravenna', 12, 44),
+('Mediolanum', 9, 45),
+('Ephesus', 27, 38),
+('Carthage', 91, 40),
+('Lugdunum', 5, 46),
+('Thessaloniki', 23, 41);
 
 #CREATE TABLE card_counts(
 #  card_count_id SMALLINT GENERATED ALWAYS AS IDENTITY,
